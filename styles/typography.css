@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Mono:wght@200;400;700&display=swap');
+
+:root {
+  --typeRatio: 1.2;
+  --fz-5: calc(var(--fz-4) / var(--typeRatio));
+  --fz-4: calc(var(--fz-3) / var(--typeRatio));
+  --fz-3: calc(var(--fz-2) / var(--typeRatio));
+  --fz-2: calc(var(--fz-1) / var(--typeRatio));
+  --fz-1: calc(var(--fz0) / var(--typeRatio));
+  --fz0: 1rem;
+  --fz1: calc(var(--fz0) * var(--typeRatio));
+  --fz2: calc(var(--fz1) * var(--typeRatio));
+  --fz3: calc(var(--fz2) * var(--typeRatio));
+  --fz4: calc(var(--fz3) * var(--typeRatio));
+  --fz5: calc(var(--fz4) * var(--typeRatio));
+  --fz6: calc(var(--fz5) * var(--typeRatio));
+}
+
+html {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+}
+
+h1, .h1 {
+  font-size: var(--fz5);
+}
+
+h2, .h2 {
+  font-size: var(--fz4);
+}
+
+h3, .h3 {
+  font-size: var(--fz3);
+}
+
+h4, .h4 {
+  font-size: var(--fz2);
+  font-size: 1.5rem;
+}
+
+h5, .h5 {
+  font-size: var(--fz1);
+}
+
+h6, .h6 {
+  font-size: var(--fz0);
+}
+
+.h1, .h2,
+h1, h2 {
+  font-family: 'Montserrat', serif;
+  font-weight: bold;
+}
+
+.h3, .h4, .h5, .h6,
+h3, h4, h5, h6 {
+  font-family: 'Montserrat', serif;
+  font-weight: 500;
+}
+
+* + h1,
+* + h2,
+* + h3,
+* + h4,
+* + h5,
+* + h6,
+* + p,
+* + ul,
+* + .markdown {
+  margin-top: 1em;
+}
+
+.text-accent {
+  font-family: 'Montserrat', serif;
+  font-weight: bold;
+}
+
+.text-mono {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: bold;
+}
+
+.font-expanded {
+  font-stretch: expanded;
+}
+
+.text-responsive {
+  font-size: clamp(100%, 3vw, 150%);
+}

@@ -1,9 +1,5 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+#__next {
+  overflow-x: hidden;
 }
 
 a {
@@ -13,4 +9,57 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn {
+  @apply px-4 py-2 rounded-sm
+}
+
+.btn-square-sm {
+  @apply px-1 py-1 rounded-sm
+}
+
+.btn-brown {
+  @apply bg-yellow-900 text-white
+}
+
+.btn-green {
+  @apply bg-green-600 text-white
+}
+
+.btn-red {
+  @apply bg-red-500 text-white
+}
+
+.icon {
+  @apply text-4xl
+}
+
+.icon-sm {
+  @apply text-xl
+}
+
+.break-out-banner {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+}
+
+input[type="number"],
+input[type="password"],
+input[type="email"],
+input[type="text"] {
+  @apply shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+}
+
+input:focus {
+  @apply outline-none ring
+}
+
+a.link {
+  @apply underline text-yellow-800
 }

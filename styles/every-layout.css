@@ -1,0 +1,149 @@
+:root {
+    --ratio: 1.5;
+    --s-5: calc(var(--s-4) / var(--ratio));
+    --s-4: calc(var(--s-3) / var(--ratio));
+    --s-3: calc(var(--s-2) / var(--ratio));
+    --s-2: calc(var(--s-1) / var(--ratio));
+    --s-1: calc(var(--s0) / var(--ratio));
+    --s0: 1rem;
+    --s1: calc(var(--s0) * var(--ratio));
+    --s2: calc(var(--s1) * var(--ratio));
+    --s3: calc(var(--s2) * var(--ratio));
+    --s4: calc(var(--s3) * var(--ratio));
+    --s5: calc(var(--s4) * var(--ratio));
+    --s6: calc(var(--s5) * var(--ratio));
+}
+
+.frame-l {
+    --d: 6;
+    --n: 9;
+    display: block;
+    position: relative;
+    padding-bottom: calc(var(--d) / var(--n) * 100%);
+    overflow: hidden;
+}
+
+.frame-l > * {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.frame-l > img,
+.frame-l > video,
+.frame-l > iframe {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.stack-l {
+  --space: var(--s0);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.stack-l > * {
+  margin-top: 0;
+  margin-bottom: 0;
+} 
+
+.stack-l > * + * {
+  margin-top: var(--space);
+}
+
+.grid-l {
+  --space: var(--s0);
+  --min: 250px;
+  display: grid;
+  grid-gap: var(--space);
+}
+
+@supports (width: min(var(--min), 100%)) {
+  .grid-l {
+    grid-template-columns: repeat(auto-fit, minmax(min(var(--min), 100%), 1fr));
+  }
+}
+  
+.cluster-l {
+  --space: var(--s0);
+  --justify: flex-start;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space, 1rem);
+  justify-content: var(--justify, flex-start);
+  align-items: center;
+}
+  
+
+.sidebar-l {
+  --space: var(--s0);
+  --sideWidth: 200px;
+  --contentMin: 50%;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space);
+}
+
+.sidebar-l > :first-child {
+  flex-basis: var(--sideWidth); 
+  flex-grow: 1;
+}
+
+.sidebar-l > :last-child {
+  flex-basis: 0;
+  flex-grow: 999;
+  min-width: var(--contentMin);
+}
+  
+
+.sidebar-l-right {
+  --space: var(--s0);
+  --sideWidth: 200px;
+  --contentMin: 50%;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space);
+}
+
+.sidebar-l-right > :last-child {
+  flex-basis: var(--sideWidth); 
+  flex-grow: 1;
+}
+
+.sidebar-l-right > :first-child {
+  flex-basis: 0;
+  flex-grow: 999;
+  min-width: var(--contentMin);
+}
+
+
+.switcher-l {
+  --measure: 767px;
+  --space: var(--s0);
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space);
+}
+
+.switcher-l > * {
+  flex-grow: 1;
+  flex-basis: calc(( var(--measure) - 100%) * 999);
+}
+
+/* Limit for horizontal is 3 */
+.switcher-l > * > :nth-last-child(n + 4),
+.switcher-l > * > :nth-last-child(n + 4) ~ * {
+  flex-basis: 100%;
+}
+  

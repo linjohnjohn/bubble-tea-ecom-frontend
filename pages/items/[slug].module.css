@@ -1,0 +1,18 @@
+.itemContainer {
+  display: flex;
+  align-items: center;
+}
+
+.itemContainer > aside {
+  flex: 1 0 400px;
+}
+
+.itemContainer > section {
+  flex: 2 0 400px;
+}
+
+@media (max-width: 767px) {
+  .itemContainer {
+    flex-direction: row wrap;
+  }
+}

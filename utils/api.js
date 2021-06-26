@@ -74,6 +74,12 @@ export const UserAPI = {
   logout: async () => {
     return fetchPost(`${API_URL}/logout`);
   },
+  forgotPassword: async (email) => {
+    return fetchPost(`${API_URL}/auth/forgot-password`, { email });
+  },
+  resetPassword: async ({ password, code, passwordConfirmation }) => {
+    return fetchPost(`${API_URL}/auth/reset-password`, { password, passwordConfirmation, code });
+  },
   getCurrentUser: async () => {
     return fetchGet(`${API_URL}/users/me`);
   }

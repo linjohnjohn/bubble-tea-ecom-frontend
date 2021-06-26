@@ -37,7 +37,6 @@ const Product = ({ item }) => {
         dispatch(actions.addItem(orderItem));
         router.push("/");
     };
-    console.log("errors: ", errors);
 
     return (<>
         <Head>

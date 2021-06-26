@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useContext, useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
@@ -10,24 +11,19 @@ import { UserAPI } from '../utils/api';
 const RegisterForm = () => {
     const password = useRef({});
 
-
-    const router = useRouter();
-    const { setUser } = useContext(AuthContext);
-
     const { register, handleSubmit, formState: { errors }, watch } = useForm();
     password.current = watch("password", "");
 
-    const registerMutation = useMutation(UserAPI.register, {
-        onSuccess: (data) => {
-            setUser(data.user);
-            router.push("/");
-        }
-    });
+    const registerMutation = useMutation(UserAPI.register);
 
 
     const onSubmit = (data) => {
         const { email, password } = data
         registerMutation.mutate({ email, password });
+    }
+
+    if (registerMutation.isSuccess) {
+        return <p>Thank you for your registration, please check your inbox to confirm your email!</p>
     }
 
     return <>
@@ -122,6 +118,7 @@ const LoginForm = () => {
     </>
 }
 
+
 const login = () => {
     const [loginState, setLoginState] = useState("login");
 
@@ -146,6 +143,11 @@ const login = () => {
                         }
                     }}
                 >{loginState === 'login' ? 'No account? Sign up' : 'Already have an account?'}</button>
+                <Link href="/reset-password">
+                    <a className="link text-center">
+                        Forgot Password?
+                    </a>
+                </Link>
             </div>
         </div>
     )

@@ -7,7 +7,6 @@ import CartContext, { actions } from '../../context/CartContext';
 import { fromImageToUrl, API_URL } from '../../utils/urls';
 import { calculatePriceWithModifiers, formatPrice } from '../../utils/cart';
 
-import styles from './[slug].module.css';
 import Image from 'next/image';
 
 const Product = ({ item }) => {

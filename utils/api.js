@@ -65,6 +65,12 @@ export const fetchPost = (url, body, params = {}) => {
 // User API
 
 export const UserAPI = {
+  login: async ({ email, password }) => {
+    return fetchPost(`${API_URL}/auth/local`, { identifier: email, password });
+  },
+  register: async ({ email, password }) => {
+    return fetchPost(`${API_URL}/auth/local/register`, { email, username: email, password })
+  },
   logout: async () => {
     return fetchPost(`${API_URL}/logout`);
   },

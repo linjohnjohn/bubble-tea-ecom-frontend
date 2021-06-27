@@ -11,7 +11,8 @@ export const withAuth = Component => {
 
     useEffect(() => {
       if (!user && !isLoading) {
-        router.push("/login");
+        const next = encodeURIComponent(router.pathname);
+        router.push(`/login?next=${next}`);
       }
     }, [user, isLoading]);
 

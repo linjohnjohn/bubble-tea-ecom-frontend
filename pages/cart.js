@@ -25,7 +25,7 @@ const cart = () => {
           <button disabled={itemCount === 0} className="w-full text-center btn btn-brown" onClick={() => setIsCheckout(true)}>
             Proceed to Checkout
           </button> :
-          <Link href="/login">
+          <Link href={`/login?next=${encodeURIComponent('/cart')}`}>
             <a className="w-full text-center btn btn-brown">
               Login to Checkout
             </a>

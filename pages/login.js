@@ -74,13 +74,20 @@ const RegisterForm = () => {
 const LoginForm = () => {
     const router = useRouter();
     const { setUser } = useContext(AuthContext);
+    const { next } = router.query;
 
-    const { register, handleSubmit, formState: { errors }, watch } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
     const loginMutation = useMutation(UserAPI.login, {
         onSuccess: (data) => {
             setUser(data.user);
-            router.push("/");
+
+            if (next) {
+                debugger
+                router.push(next);
+            } else {
+                router.push("/");
+            }
         }
     });
 

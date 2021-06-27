@@ -29,11 +29,12 @@ export const CartTable = ({ cart, itemCount, totalPrice, handleUpdateQuantity, i
           toppings,
           variant,
           unitPrice,
+          id
         } = orderItem;
 
         const { name, image } = item || {};
 
-        return <div className="flex items-center w-full">
+        return <div className="flex items-center w-full" key={id}>
           <div className="w-1/6">
             <div className="frame-l" style={{ "--n": 1, "--d": 1 }}>
               <Image src={fromImageToUrl(image)} alt={image?.alternativeText} layout="fill" sizes="17vw" objectFit="cover" />

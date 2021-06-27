@@ -21,7 +21,7 @@ const ForgetPasswordForm = () => {
       <p className="text-center">Check your inbox, we've sent a reset password link to your email.</p> :
       <form className="stack-l" onSubmit={handleSubmit(onSubmit)}>
         {/* @todo fix error messages */}
-        {forgotPasswordMutation.isError && <p className="text-red-500">Sorry something went wrong!</p>}
+        {forgotPasswordMutation.isError && <p className="text-red-500">{forgotPasswordMutation.error.message}</p>}
         <input
           className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           type="email"
@@ -61,7 +61,7 @@ const ResetPasswordForm = ({ code }) => {
         </Link>
       </p> :
       <form className="stack-l" onSubmit={handleSubmit(onSubmit)}>
-        {resetPasswordMutation.isError && <p className="text-red-500">Sorry something went wrong!</p>}
+        {resetPasswordMutation.isError && <p className="text-red-500">{resetPasswordMutation.error.message}</p>}
         <input
           className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           type="password"

@@ -32,6 +32,11 @@ export default function request(url, options) {
         }
         // extract the error from the server's json
         const e = new Error(response.json.message);
+
+        if (typeof response.json.message !== "string") {
+          e.details = response.json.message;
+        }
+
         e.status = response.status
         return reject(e);
       })
@@ -64,21 +69,40 @@ export const fetchPost = (url, body, params = {}) => {
 
 // User API
 
+const handleFormatAuthErrors = (error) => {
+  let newMessage;
+  try {
+    newMessage = error.details[0].messages.map(m => m.message).join(", ");
+  } catch (e) {
+    throw new Error("Something went wrong with your authentication.")
+  }
+  error.message = newMessage;
+  throw error;
+}
+
 export const UserAPI = {
   login: async ({ email, password }) => {
-    return fetchPost(`${API_URL}/auth/local`, { identifier: email, password });
+    return fetchPost(`${API_URL}/auth/local`, { identifier: email, password })
+      .catch((error) => {
+        return handleFormatAuthErrors(error);
+      });
   },
   register: async ({ email, password }) => {
     return fetchPost(`${API_URL}/auth/local/register`, { email, username: email, password })
+      .catch(handleFormatAuthErrors)
   },
   logout: async () => {
-    return fetchPost(`${API_URL}/logout`);
+    return fetchPost(`${API_URL}/logout`)
+      .catch(handleFormatAuthErrors);
   },
   forgotPassword: async (email) => {
-    return fetchPost(`${API_URL}/auth/forgot-password`, { email });
+    return fetchPost(`${API_URL}/auth/forgot-password`, { email })
+      .catch(handleFormatAuthErrors);
+
   },
   resetPassword: async ({ password, code, passwordConfirmation }) => {
-    return fetchPost(`${API_URL}/auth/reset-password`, { password, passwordConfirmation, code });
+    return fetchPost(`${API_URL}/auth/reset-password`, { password, passwordConfirmation, code })
+      .catch(handleFormatAuthErrors);
   },
   getCurrentUser: async () => {
     return fetchGet(`${API_URL}/users/me`);

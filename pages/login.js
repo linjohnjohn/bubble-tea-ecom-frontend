@@ -29,7 +29,7 @@ const RegisterForm = () => {
     return <>
         <h2 className="my-8 text-center">Register</h2>
         <form className="stack-l" onSubmit={handleSubmit(onSubmit)}>
-            <p className="text-red-500">{registerMutation.isError && 'Email is already used'}</p>
+            <p className="text-red-500">{registerMutation.isError && registerMutation.error.message}</p>
             <input
                 className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 type="email"
@@ -99,7 +99,7 @@ const LoginForm = () => {
     return <>
         <h2 className="my-8 text-center">Login</h2>
         <form className="stack-l" onSubmit={handleSubmit(onSubmit)}>
-            <p className="text-red-500">{loginMutation.isError && 'Incorrect email and/or password.'}</p>
+            <p className="text-red-500">{loginMutation.isError && loginMutation.error.message}</p>
             <input
                 className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 type="email"

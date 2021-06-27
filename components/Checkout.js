@@ -124,6 +124,7 @@ const CheckoutForm = ({ setOrderCart }) => {
     {stripeMutation.isLoading ? <button className="btn btn-green w-full" disabled={true}>Processing Payment...</button>
       : <button type="submit" className="btn btn-green w-full" disabled={!stripe}>Purchase for {formatPrice(total / 100)}</button>}
     {stripeMutation.isError && <p className="text-red-500">{stripeMutation.error.message}</p>}
+    <p>This site is for demonstrational and educational purpose and uses Stripe's testing environment for payment processing, and so you can checkout with any of <a className="link" href="https://stripe.com/docs/testing#cards" target="_blank">Stripe's test cards</a></p>
   </form>
 }
 

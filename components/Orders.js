@@ -44,8 +44,8 @@ export const Orders = () => {
           </div>
 
           <ul className="py-4 flex">
-            {order_items.map(({ item, id }) => {
-              return <li className="w-12" key={id}>
+            {order_items.map(({ item }) => {
+              return <li className="w-12">
                 <div className="frame-l" style={{ "--n": 1, "--d": 1 }}>
                   <Image className="rounded-full" src={fromImageToUrl(item.image)} layout="fill" sizes="3rem" objectFit="cover" />
                 </div>

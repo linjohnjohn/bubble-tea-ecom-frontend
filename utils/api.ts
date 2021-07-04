@@ -1,17 +1,11 @@
-/**
- * Parses the JSON returned by a network request
- *
- * @param  {object} response A response from a network request
- *
- * @return {object}          The parsed JSON, status from the response
- */
-function parseJSON(response) {
-  return new Promise((resolve) => response.json()
-    .then((json) => resolve({
-      status: response.status,
-      ok: response.ok,
-      json,
-    })));
+import { PaymentIntent } from '@stripe/stripe-js';
+import { RequestOrderItem } from 'ts-defs/cart';
+import { Order } from 'ts-defs/generated';
+
+export class CustomError extends Error {
+  status: number;
+
+  details: any;
 }
 
 /**
@@ -22,74 +16,73 @@ function parseJSON(response) {
  *
  * @return {Promise}           The request promise
  */
-export default function request(url, options) {
+export default function request<T>(url, options): Promise<T> {
   return new Promise((resolve, reject) => {
     fetch(url, options)
-      .then(parseJSON)
-      .then((response) => {
+      .then(async (response) => {
         if (response.ok) {
-          return resolve(response.json);
+          return resolve(response.json());
         }
+
+        const error = await response.json();
+
         // extract the error from the server's json
-        const e = new Error(response.json.message);
+        const e = new CustomError(error.message);
 
-        if (typeof response.json.message !== "string") {
-          e.details = response.json.message;
+        if (typeof error.message !== 'string') {
+          e.details = error.message;
         }
 
-        e.status = response.status
+        e.status = response.status;
         return reject(e);
       })
-      .catch((error) => reject({
-        networkError: error.message,
-      }));
+      .catch((error) => reject(new CustomError(error.message)));
   });
 }
 
 export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1337';
 
-export const fetchGet = (url, params = {}) => {
+export const fetchGet = <T>(url: string, params = {}): Promise<T> => {
   const query = new URLSearchParams(params).toString();
   return request(`${url}?${query}`, {
-    credentials: "include"
+    credentials: 'include',
   });
-}
+};
 
-export const fetchPost = (url, body, params = {}) => {
+export const fetchPost = <T>(url: string, body?: any, params = {}): Promise<T> => {
   const query = new URLSearchParams(params).toString();
   return request(`${url}?${query}`, {
-    method: "POST",
-    credentials: "include",
+    method: 'POST',
+    credentials: 'include',
     headers: {
-      "Content-Type": "application/json"
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify(body)
+    body: body && JSON.stringify(body),
   });
-}
+};
 
 // User API
 
-const handleFormatAuthErrors = (error) => {
+const handleFormatAuthErrors = (error): void => {
   let newMessage;
   try {
-    newMessage = error.details[0].messages.map(m => m.message).join(", ");
+    newMessage = error.details[0].messages.map((m) => m.message).join(', ');
   } catch (e) {
-    throw new Error("Something went wrong with your authentication.")
+    throw new Error('Something went wrong with your authentication.');
   }
-  error.message = newMessage;
-  throw error;
-}
+  throw new Error(newMessage);
+};
 
 export const UserAPI = {
-  login: async ({ email, password }) => {
+  login: async ({ email, password }: { email: string, password: string }) => {
     return fetchPost(`${API_URL}/auth/local`, { identifier: email, password })
       .catch((error) => {
-        return handleFormatAuthErrors(error);
+        handleFormatAuthErrors(error);
       });
   },
   register: async ({ email, password }) => {
     return fetchPost(`${API_URL}/auth/local/register`, { email, username: email, password })
-      .catch(handleFormatAuthErrors)
+      .catch(handleFormatAuthErrors);
   },
   logout: async () => {
     return fetchPost(`${API_URL}/logout`)
@@ -98,47 +91,52 @@ export const UserAPI = {
   forgotPassword: async (email) => {
     return fetchPost(`${API_URL}/auth/forgot-password`, { email })
       .catch(handleFormatAuthErrors);
-
   },
-  resetPassword: async ({ password, code, passwordConfirmation }) => {
+  resetPassword: async ({ password, code, passwordConfirmation }:
+  { password: string, code: string, passwordConfirmation: string }) => {
     return fetchPost(`${API_URL}/auth/reset-password`, { password, passwordConfirmation, code })
       .catch(handleFormatAuthErrors);
   },
   getCurrentUser: async () => {
     return fetchGet(`${API_URL}/users/me`);
-  }
-}
+  },
+};
 
 // Pages API
 
 export const getHomeData = async () => {
   return fetchGet(`${API_URL}/home`);
-}
+};
 
 // Items API
 
 export const getAllItems = async () => {
   return fetchGet(`${API_URL}/items`);
-}
+};
 
 export const getAllCategories = async () => {
   return fetchGet(`${API_URL}/categories`);
-}
+};
 
 // Orders API
 
-export const fetchOrders = async () => {
+export const fetchOrders = async (): Promise<Order[]> => {
   return fetchGet(`${API_URL}/orders`);
-}
+};
 
-export const fetchOrder = async (id) => {
+export const fetchOrder = async (id): Promise<Order> => {
   return fetchGet(`${API_URL}/orders/${id}`);
+};
+
+interface InitiateCheckoutReturnType {
+  order: Order,
+  paymentIntent: PaymentIntent
 }
 
-export const initiateCheckout = async (cart) => {
+export const initiateCheckout = async (cart: RequestOrderItem[]): Promise<InitiateCheckoutReturnType> => {
   return fetchPost(`${API_URL}/orders/initiateCheckout`, { cart });
-}
+};
 
 export const confirmPayment = async (paymentIntent) => {
   return fetchPost(`${API_URL}/orders/confirmPayment`, { paymentIntent });
-}
+};

@@ -5,12 +5,12 @@ module.exports = {
   theme: {
     extend: {
       minHeight: {
-        '50vh': "50vh"
-      }
+        '50vh': '50vh',
+      },
     },
   },
   variants: {
     extend: {},
   },
   plugins: [],
-}
+};

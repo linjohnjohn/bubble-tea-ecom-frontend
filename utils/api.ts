@@ -62,40 +62,22 @@ export const fetchPost = <T>(url: string, body?: any, params = {}): Promise<T> =
 };
 
 // User API
-
-const handleFormatAuthErrors = (error): void => {
-  let newMessage;
-  try {
-    newMessage = error.details[0].messages.map((m) => m.message).join(', ');
-  } catch (e) {
-    throw new Error('Something went wrong with your authentication.');
-  }
-  throw new Error(newMessage);
-};
-
 export const UserAPI = {
   login: async ({ email, password }: { email: string, password: string }) => {
-    return fetchPost(`${API_URL}/auth/local`, { identifier: email, password })
-      .catch((error) => {
-        handleFormatAuthErrors(error);
-      });
+    return fetchPost(`${API_URL}/auth/local`, { identifier: email, password });
   },
   register: async ({ email, password }) => {
-    return fetchPost(`${API_URL}/auth/local/register`, { email, username: email, password })
-      .catch(handleFormatAuthErrors);
+    return fetchPost(`${API_URL}/auth/local/register`, { email, username: email, password });
   },
   logout: async () => {
-    return fetchPost(`${API_URL}/logout`)
-      .catch(handleFormatAuthErrors);
+    return fetchPost(`${API_URL}/logout`);
   },
   forgotPassword: async (email) => {
-    return fetchPost(`${API_URL}/auth/forgot-password`, { email })
-      .catch(handleFormatAuthErrors);
+    return fetchPost(`${API_URL}/auth/forgot-password`, { email });
   },
   resetPassword: async ({ password, code, passwordConfirmation }:
   { password: string, code: string, passwordConfirmation: string }) => {
-    return fetchPost(`${API_URL}/auth/reset-password`, { password, passwordConfirmation, code })
-      .catch(handleFormatAuthErrors);
+    return fetchPost(`${API_URL}/auth/reset-password`, { password, passwordConfirmation, code });
   },
   getCurrentUser: async () => {
     return fetchGet(`${API_URL}/users/me`);

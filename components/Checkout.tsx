@@ -141,7 +141,7 @@ const CheckoutForm = ({ setOrderCart }) => {
         )}
       {stripeMutation.isError && <p className="text-red-500">{stripeMutation.error.message}</p>}
       <p>
-        {'This site is for demonstrational and educational purpose and uses Stripe\'s testing environment for payment processing, and so you can checkout with any of'}
+        {'This site is for demonstrational and educational purpose and uses Stripe\'s testing environment for payment processing, and so you can checkout with any of '}
         <a className="link" href="https://stripe.com/docs/testing#cards" target="_blank" rel="noreferrer">{'Stripe\'s test cards'}</a>
       </p>
     </form>

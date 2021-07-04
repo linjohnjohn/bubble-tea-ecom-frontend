@@ -19,8 +19,7 @@ const account = () => {
         <div className="stack-l items-start">
           <h2 className="h3">Profile</h2>
           <p>
-            Welcome back
-            {user.email}
+            {`Welcome back ${user.email}`}
           </p>
           <button type="button" className="btn btn-red" onClick={logoutUser}>Logout</button>
         </div>

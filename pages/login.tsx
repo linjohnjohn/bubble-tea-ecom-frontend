@@ -89,9 +89,7 @@ const LoginForm = () => {
 
   const loginMutation = useMutation<{
     user: UsersPermissionsUser
-  }, Error, UserFormFields>(async (fields) => {
-    return await UserAPI.login(fields) as { user: UsersPermissionsUser };
-  }, {
+  }, Error, UserFormFields>(UserAPI.login, {
     onSuccess: (data) => {
       setUser(data.user);
 

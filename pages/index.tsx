@@ -6,7 +6,7 @@ import { Category, Home, Item } from 'ts-defs/generated';
 import styles from '../styles/Home.module.css';
 
 import { fromImageToUrl } from '../utils/urls';
-import { getAllItems, getAllCategories, getHomeData } from '../utils/api';
+import { getAllCategories, getHomeData } from '../utils/api';
 import { formatPrice } from '../utils/cart';
 
 interface HomeProps {
@@ -108,14 +108,12 @@ export default function HomePage({ categories, home }: HomeProps) {
 }
 
 export async function getStaticProps() {
-  const items = await getAllItems();
   const home = await getHomeData();
   const categories = await getAllCategories();
 
   return {
     props: {
       home,
-      items,
       categories,
     },
   };

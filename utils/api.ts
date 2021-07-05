@@ -1,15 +1,16 @@
 import { PaymentIntent } from '@stripe/stripe-js';
 import { RequestOrderItem } from 'ts-defs/cart';
-import { Order } from 'ts-defs/generated';
+import {
+  Category, Home, Item, Order, UsersPermissionsUser,
+} from 'ts-defs/generated';
 
 export class CustomError extends Error {
   status: number;
-
   details: any;
 }
 
 /**
- * Requests a URL, returning a promise
+ * Wrapper for fetch converting HTTP error to Javascript Errors
  *
  * @param  {string} url       The URL we want to request
  * @param  {object} [options] The options we want to pass to "fetch"
@@ -26,6 +27,8 @@ export default function request<T>(url, options): Promise<T> {
 
         const error = await response.json();
 
+        // @todo replace with real logging service
+        console.error('Fetch Error: ', { url, options, error });
         // extract the error from the server's json
         const e = new CustomError(error.message);
 
@@ -63,10 +66,12 @@ export const fetchPost = <T>(url: string, body?: any, params = {}): Promise<T> =
 
 // User API
 export const UserAPI = {
-  login: async ({ email, password }: { email: string, password: string }) => {
-    return fetchPost(`${API_URL}/auth/local`, { identifier: email, password });
-  },
-  register: async ({ email, password }) => {
+  login: async ({ email, password }: { email: string, password: string }) => (
+    fetchPost<{ user: UsersPermissionsUser }>(`${API_URL}/auth/local`, { identifier: email, password })
+  ),
+  register: async ({ email, password }: {
+    email: string, password: string
+  }) => {
     return fetchPost(`${API_URL}/auth/local/register`, { email, username: email, password });
   },
   logout: async () => {
@@ -80,34 +85,34 @@ export const UserAPI = {
     return fetchPost(`${API_URL}/auth/reset-password`, { password, passwordConfirmation, code });
   },
   getCurrentUser: async () => {
-    return fetchGet(`${API_URL}/users/me`);
+    return fetchGet<UsersPermissionsUser>(`${API_URL}/users/me`);
   },
 };
 
 // Pages API
 
 export const getHomeData = async () => {
-  return fetchGet(`${API_URL}/home`);
+  return fetchGet<Home>(`${API_URL}/home`);
 };
 
 // Items API
 
 export const getAllItems = async () => {
-  return fetchGet(`${API_URL}/items`);
+  return fetchGet<Item[]>(`${API_URL}/items`);
 };
 
 export const getAllCategories = async () => {
-  return fetchGet(`${API_URL}/categories`);
+  return fetchGet<Category[]>(`${API_URL}/categories`);
 };
 
 // Orders API
 
-export const fetchOrders = async (): Promise<Order[]> => {
-  return fetchGet(`${API_URL}/orders`);
+export const fetchOrders = async () => {
+  return fetchGet<Order[]>(`${API_URL}/orders`);
 };
 
-export const fetchOrder = async (id): Promise<Order> => {
-  return fetchGet(`${API_URL}/orders/${id}`);
+export const fetchOrder = async (id) => {
+  return fetchGet<Order>(`${API_URL}/orders/${id}`);
 };
 
 interface InitiateCheckoutReturnType {
@@ -115,10 +120,10 @@ interface InitiateCheckoutReturnType {
   paymentIntent: PaymentIntent
 }
 
-export const initiateCheckout = async (cart: RequestOrderItem[]): Promise<InitiateCheckoutReturnType> => {
-  return fetchPost(`${API_URL}/orders/initiateCheckout`, { cart });
+export const initiateCheckout = async (cart: RequestOrderItem[]) => {
+  return fetchPost<InitiateCheckoutReturnType>(`${API_URL}/orders/initiateCheckout`, { cart });
 };
 
 export const confirmPayment = async (paymentIntent) => {
-  return fetchPost(`${API_URL}/orders/confirmPayment`, { paymentIntent });
+  return fetchPost<Order>(`${API_URL}/orders/confirmPayment`, { paymentIntent });
 };

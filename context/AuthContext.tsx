@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
 
   const checkUserLoggedIn = async () => {
     try {
-      const currentUser = await UserAPI.getCurrentUser() as UsersPermissionsUser;
+      const currentUser = await UserAPI.getCurrentUser();
 
       if (currentUser) {
         setUser(currentUser);

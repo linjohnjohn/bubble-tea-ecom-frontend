@@ -28,5 +28,10 @@ module.exports = {
     'no-else-return': 'off',
     'import/prefer-default-export': 'off',
     'arrow-body-style': 'off',
+    '@typescript-eslint/lines-between-class-members': [
+      'error',
+      'always',
+      { exceptAfterSingleLine: true },
+    ],
   },
 };
